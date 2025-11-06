@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import hola
-from .views import listar_jugadores, stats_jugador, crear_jugador, crear_partida, editar_jugador, ranking_jugadores, login_jugador
+from .views import listar_jugadores, stats_jugador, crear_jugador, crear_partida, editar_jugador, ranking_jugadores, login_jugador , hola
 urlpatterns = [
     path('', hola, name='hola'),   # GET /
     path('jugadores/', listar_jugadores, name='listar_jugadores'),  # GET /jugadores/

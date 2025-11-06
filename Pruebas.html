@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas del Jugador</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #9bc97f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Obtener Estadísticas de un Jugador</h1>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Buscar Jugador</h5>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="searchType" id="searchById" value="id" checked>
+                                <label class="form-check-label" for="searchById">
+                                    Buscar por ID
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="searchType" id="searchByName" value="name">
+                                <label class="form-check-label" for="searchByName">
+                                    Buscar por Nombre de Usuario
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="playerInput" class="form-label" id="inputLabel">ID del Jugador</label>
+                            <input type="text" class="form-control" id="playerInput" placeholder="Ingresa el ID o nombre">
+                        </div>
+                        <button id="fetchBtn" class="btn btn-primary w-100">Obtener Estadísticas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="result" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Información del Jugador</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>ID:</strong> <span id="playerIdDisplay"></span></p>
+                            <p><strong>Nombre de Usuario:</strong> <span id="playerUsername"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Estadísticas</h6>
+                            <p><strong>Total de Victorias:</strong> <span id="totalVictorias"></span></p>
+                            <p><strong>Total de Derrotas:</strong> <span id="totalDerrotas"></span></p>
+                            <p><strong>Partidas Jugadas:</strong> <span id="partidasJugadas"></span></p>
+                            <p><strong>Promedio de Tiempo:</strong> <span id="promedioTiempo"></span></p>
+                            <p><strong>Nivel Más Jugado:</strong> <span id="nivelMasJugado"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="error" class="alert alert-danger mt-4" style="display: none;"></div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Cambiar el tipo de input y placeholder según la selección
+        document.querySelectorAll('input[name="searchType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const input = document.getElementById('playerInput');
+                const label = document.getElementById('inputLabel');
+                if (this.value === 'id') {
+                    input.type = 'number';
+                    input.placeholder = 'Ingresa el ID del jugador';
+                    label.textContent = 'ID del Jugador';
+                    input.min = '1';
+                } else {
+                    input.type = 'text';
+                    input.placeholder = 'Ingresa el nombre de usuario';
+                    label.textContent = 'Nombre de Usuario';
+                    input.removeAttribute('min');
+                }
+            });
+        });
+
+        document.getElementById('fetchBtn').addEventListener('click', function() {
+            const searchType = document.querySelector('input[name="searchType"]:checked').value;
+            const playerInput = document.getElementById('playerInput').value.trim();
+            
+            if (!playerInput) {
+                alert('Por favor, ingresa un valor válido.');
+                return;
+            }
+            
+            const url = `http://31.97.139.53:3000/jugadores/${encodeURIComponent(playerInput)}/stats/`;
+            
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Jugador no encontrado o error en la solicitud.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Asumiendo la estructura del JSON como descrita
+                    document.getElementById('playerIdDisplay').textContent = data.jugador.id;
+                    document.getElementById('playerUsername').textContent = data.jugador.nombre_usuario;
+                    document.getElementById('totalVictorias').textContent = data.estadisticas.total_victorias;
+                    document.getElementById('totalDerrotas').textContent = data.estadisticas.total_derrotas;
+                    document.getElementById('partidasJugadas').textContent = data.estadisticas.partidas_jugadas;
+                    document.getElementById('promedioTiempo').textContent = data.estadisticas.promedio_tiempo;
+                    document.getElementById('nivelMasJugado').textContent = data.estadisticas.nivel_mas_jugado;
+                    
+                    document.getElementById('result').style.display = 'block';
+                    document.getElementById('error').style.display = 'none';
+                })
+                .catch(error => {
+                    document.getElementById('error').textContent = error.message;
+                    document.getElementById('error').style.display = 'block';
+                    document.getElementById('result').style.display = 'none';
+                });
+        });
+    </script>
+</body>
+</html>
+

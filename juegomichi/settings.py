@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'juegomichi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'juego_db',     
-        'USER': 'root',        
-        'PASSWORD': '',         
-        'HOST': '127.0.0.1',
+        'NAME': 'juego_db',
+        'USER': 'root',
+        'PASSWORD': '1234',
+        'HOST': 'db',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
@@ -91,7 +91,6 @@ DATABASES = {
         },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
