@@ -20,3 +20,7 @@ paso #4 como ejecutar el proyecto (tiene que ser en el entorno virtual)
 
 pip install pymysql
 pip install django-cors-headers
+
+Docker 
+
+docker compose up --build
