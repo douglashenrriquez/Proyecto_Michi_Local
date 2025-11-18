@@ -165,7 +165,7 @@ def crear_partida(request):
         jugador_id = data.get('jugador_id')
         resultado = data.get('resultado')        # 'Victoria' | 'Derrota'
         nivel = data.get('nivel')                # 'Básico' | 'Medio' | 'Avanzado'
-        fecha_in = data.get('fecha')             # ISO8601 opcional
+        fecha_in = data.get('fecha')             
         tiempo_in = data.get('tiempo')           # número
 
         # Validaciones mínimas
