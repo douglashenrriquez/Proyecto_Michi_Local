@@ -81,9 +81,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'juego_db',
-        'USER': 'codex',
-        'PASSWORD': 'douglas14051815',
-        'HOST': '31.97.139.53',  
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',  
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
